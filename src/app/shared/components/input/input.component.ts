@@ -1,4 +1,4 @@
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, forwardRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormControl, NG_VALUE_ACCESSOR, ControlValueAccessor, ReactiveFormsModule, AbstractControl } from '@angular/forms';
 
@@ -27,6 +27,9 @@ export class InputComponent implements ControlValueAccessor {
     @Input() mask: 'phone' | 'none' = 'none';
     @Input() icon?: string;
     @Input() parentForm?: any; // Para validações cross-field
+    @Input() maxlength?: number;
+
+    @Output() input = new EventEmitter<Event>();
 
     private onChange: (value: any) => void = () => { };
     private onTouched: () => void = () => { };
@@ -72,6 +75,9 @@ export class InputComponent implements ControlValueAccessor {
 
         this.control?.setValue(newValue);
         this.control?.markAsDirty();
+
+        // Emite o evento para o componente pai (para máscaras customizadas)
+        this.input.emit(event);
     }
 
     onBlurEvent(): void {

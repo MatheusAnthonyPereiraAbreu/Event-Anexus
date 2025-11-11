@@ -1,0 +1,146 @@
+<div class="min-h-screen bg-grayLight p-8">
+    <div class="max-w-4xl mx-auto">
+        <!-- Loading State -->
+        <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary"></div>
+        </div>
+
+        <!-- Form -->
+        <div *ngIf="!isLoading">
+            <!-- Header -->
+            <header class="mb-8">
+                <div class="flex items-center gap-4 mb-4">
+                    <button (click)="cancel()" class="p-2 hover:bg-white rounded-lg transition-colors">
+                        <i class="ph-bold ph-arrow-left text-2xl text-secondary"></i>
+                    </button>
+                    <div>
+                        <h1 class="text-4xl font-bold text-secondary">Editar Evento</h1>
+                        <p class="text-gray-600 mt-1">Atualize os dados do evento</p>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Formulário -->
+            <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="bg-white rounded-2xl shadow-lg p-8">
+
+                <!-- Informações Básicas -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
+                        <i class="ph-bold ph-info text-3xl"></i>
+                        Informações Básicas
+                    </h2>
+
+                    <div class="space-y-4">
+                        <app-input label="Título do Evento *" placeholder="Ex: Workshop de Angular Avançado" type="text"
+                            icon="text-aa" [control]="eventForm.get('title')!" [errorMessages]="{
+                            required: 'Título é obrigatório',
+                            maxlength: 'Máximo de 100 caracteres'
+                        }" />
+
+                        <app-textarea label="Descrição (opcional)"
+                            placeholder="Descreva o evento, conteúdo, público-alvo, etc..."
+                            [control]="eventForm.get('description')!" [rows]="4" [maxlength]="500" [showCounter]="true"
+                            [errorMessages]="{
+                            maxlength: 'Máximo de 500 caracteres'
+                        }" />
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <app-select label="Tipo de Evento *" placeholder="Selecione o tipo"
+                                [control]="eventForm.get('type')!" [options]="eventTypeOptions" [errorMessages]="{
+                                required: 'Tipo é obrigatório'
+                            }" />
+
+                            <app-input label="Palestrante (opcional)" placeholder="Nome do palestrante" type="text"
+                                icon="user-circle" [control]="eventForm.get('speaker')!" />
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Data e Horário -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
+                        <i class="ph-bold ph-calendar text-3xl"></i>
+                        Data e Horário
+                    </h2>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <app-input label="Data do Evento *" placeholder="DD/MM/AAAA" type="text" icon="calendar-blank"
+                            [control]="eventForm.get('date')!" (input)="applyDateMask($event)" [errorMessages]="{
+                            required: 'Data é obrigatória',
+                            pastDate: 'A data deve ser futura'
+                        }" />
+
+                        <app-input label="Horário *" placeholder="HH:MM" type="text" icon="clock"
+                            [control]="eventForm.get('time')!" (input)="applyTimeMask($event)" [errorMessages]="{
+                            required: 'Horário é obrigatório',
+                            invalidTime: 'Formato inválido (HH:MM)'
+                        }" />
+                    </div>
+                </section>
+
+                <!-- Local e Capacidade -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
+                        <i class="ph-bold ph-map-pin text-3xl"></i>
+                        Local e Capacidade
+                    </h2>
+
+                    <div class="space-y-4">
+                        <app-input label="Local do Evento *" placeholder="Ex: Auditório Central, Online, etc."
+                            type="text" icon="map-pin" [control]="eventForm.get('location')!" [errorMessages]="{
+                            required: 'Local é obrigatório'
+                        }" />
+
+                        <!-- Capacidade com checkbox ao lado -->
+                        <div class="flex items-end gap-4">
+                            <div class="flex-1">
+                                <app-number-input label="Capacidade de Participantes" placeholder="Digite a capacidade"
+                                    icon="users" [control]="eventForm.get('capacity')!" [min]="0" />
+                            </div>
+
+                            <!-- Checkbox ao lado -->
+                            <div class="flex items-center gap-2 pb-8">
+                                <input type="checkbox" id="unlimitedCapacity" [checked]="unlimitedCapacity"
+                                    (click)="toggleUnlimitedCapacity()"
+                                    class="w-4 h-4 text-secondary bg-grayLight border-gray-300 rounded focus:ring-secondary focus:ring-2 cursor-pointer" />
+                                <label for="unlimitedCapacity"
+                                    class="text-sm text-gray-700 cursor-pointer select-none whitespace-nowrap">
+                                    Ilimitado
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Responsável -->
+                <section class="mb-8">
+                    <h2 class="text-2xl font-bold text-secondary mb-6 flex items-center gap-2">
+                        <i class="ph-bold ph-identification-card text-3xl"></i>
+                        Responsabilidade
+                    </h2>
+
+                    <app-input label="Responsável pelo Evento *"
+                        placeholder="Nome do responsável (aparecerá no certificado)" type="text" icon="user-circle-gear"
+                        [control]="eventForm.get('responsible')!" [errorMessages]="{
+                        required: 'Responsável é obrigatório'
+                    }" />
+                    <p class="text-xs text-gray-500 mt-2">
+                        Este nome aparecerá nos certificados de participação do evento
+                    </p>
+                </section>
+
+                <!-- Botões de Ação -->
+                <div class="flex gap-4 pt-6 border-t">
+                    <app-button type="button" text="Cancelar" buttonType="outline" [fullWidth]="true"
+                        (btnClick)="cancel()">
+                    </app-button>
+
+                    <app-button type="submit" text="Salvar Alterações" buttonType="primary"
+                        [disabled]="eventForm.invalid || isSubmitting" [loading]="isSubmitting"
+                        loadingText="Salvando..." [fullWidth]="true">
+                    </app-button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

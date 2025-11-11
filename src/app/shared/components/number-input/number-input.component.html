@@ -1,0 +1,22 @@
+<div class="relative pb-8">
+    <label *ngIf="label" class="block text-sm font-medium mb-1">
+        {{ label }}
+    </label>
+
+    <input type="number" [formControl]="$any(control)" [placeholder]="placeholder" [attr.min]="min" [attr.max]="max"
+        (blur)="onBlurEvent()"
+        class="w-full border rounded-xl px-3 py-2 bg-grayLight focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-all"
+        [class.border-red-500]="showError" />
+
+    <!-- Mensagens de erro -->
+    <span *ngIf="showError" class="absolute left-0 z-10 text-red-500 text-sm top-[calc(100%-1.5rem)]">
+        <span *ngFor="let error of control.errors | keyvalue">
+            {{ getErrorMessage(error.key) || error.value }}
+        </span>
+    </span>
+
+    <!-- Texto de ajuda -->
+    <p *ngIf="helpText && !showError" class="absolute left-0 text-xs text-gray-500 top-[calc(100%-1.5rem)]">
+        {{ helpText }}
+    </p>
+</div>

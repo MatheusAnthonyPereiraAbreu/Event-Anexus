@@ -1,0 +1,87 @@
+<div class="min-h-screen bg-grayLight p-8">
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <div class="flex justify-between items-center mb-8">
+            <div>
+                <h1 class="text-4xl font-bold text-secondary">Meus Eventos</h1>
+                <p class="text-gray-600 mt-1">Gerencie os eventos que você criou</p>
+            </div>
+            <app-button text="Criar Novo Evento" buttonType="primary" icon="plus" [fullWidth]="false"
+                (btnClick)="createNewEvent()">
+            </app-button>
+        </div>
+
+        <!-- Loading -->
+        <div *ngIf="isLoading" class="flex justify-center items-center py-20">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-secondary"></div>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoading && events.length === 0" class="bg-white rounded-2xl shadow-lg p-12 text-center">
+            <i class="ph-bold ph-calendar-x text-8xl text-gray-300 mb-4"></i>
+            <h2 class="text-2xl font-bold text-gray-700 mb-2">Nenhum evento criado</h2>
+            <p class="text-gray-500 mb-6">Comece criando seu primeiro evento!</p>
+            <app-button text="Criar Primeiro Evento" buttonType="primary" icon="plus" [fullWidth]="false"
+                (btnClick)="createNewEvent()">
+            </app-button>
+        </div>
+
+        <!-- Events Grid -->
+        <div *ngIf="!isLoading && events.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div *ngFor="let event of events"
+                class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-xl transition-shadow">
+
+                <!-- Event Header -->
+                <div class="bg-gradient-to-r from-primary to-secondary p-4">
+                    <span class="inline-block px-3 py-1 bg-white/20 rounded-full text-white text-sm font-medium">
+                        {{ translateEventType(event.type) }}
+                    </span>
+                </div>
+
+                <!-- Event Content -->
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-secondary mb-3 line-clamp-2">{{ event.title }}</h3>
+
+                    <div class="space-y-2 mb-4">
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="ph-bold ph-calendar text-primary"></i>
+                            <span class="text-sm">{{ formatDate(event.date) }} às {{ event.time }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="ph-bold ph-map-pin text-primary"></i>
+                            <span class="text-sm line-clamp-1">{{ event.location }}</span>
+                        </div>
+
+                        <div class="flex items-center gap-2 text-gray-600">
+                            <i class="ph-bold ph-users text-primary"></i>
+                            <span class="text-sm">{{ getCapacityText(event.capacity) }}</span>
+                        </div>
+
+                        <div *ngIf="event.speaker" class="flex items-center gap-2 text-gray-600">
+                            <i class="ph-bold ph-microphone-stage text-primary"></i>
+                            <span class="text-sm line-clamp-1">{{ event.speaker }}</span>
+                        </div>
+                    </div>
+
+                    <p *ngIf="event.description" class="text-gray-600 text-sm mb-4 line-clamp-3">
+                        {{ event.description }}
+                    </p>
+
+                    <!-- Actions -->
+                    <div class="flex gap-2 pt-4 border-t">
+                        <button (click)="editEvent(event.id)"
+                            class="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors flex items-center justify-center gap-2">
+                            <i class="ph-bold ph-pencil"></i>
+                            Editar
+                        </button>
+                        <button (click)="deleteEvent(event)"
+                            class="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors flex items-center justify-center">
+                            <i class="ph-bold ph-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

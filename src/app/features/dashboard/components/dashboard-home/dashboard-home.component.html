@@ -27,7 +27,7 @@
     <div class="bg-white rounded-lg shadow-md p-6 border border-grayLight">
         <h2 class="text-xl font-semibold text-primary mb-4">Ações Rápidas</h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <button
+            <button (click)="navigateToCreateEvent()"
                 class="p-4 border-2 border-dashed border-grayCool rounded-lg hover:border-primary hover:bg-grayLight transition-all duration-200 flex flex-col items-center justify-center space-y-2 group">
                 <svg class="w-8 h-8 text-grayCool group-hover:text-primary" fill="none" stroke="currentColor"
                     viewBox="0 0 24 24">
@@ -52,14 +52,75 @@
 
     <!-- Recent Activity -->
     <div class="bg-white rounded-lg shadow-md p-6 border border-grayLight">
-        <h2 class="text-xl font-semibold text-primary mb-4">Atividades Recentes</h2>
-        <div class="text-center py-12">
+        <div class="flex justify-between items-center mb-4">
+            <h2 class="text-xl font-semibold text-primary">Atividades Recentes</h2>
+            <button *ngIf="recentEvents.length > 0" (click)="navigateToAllEvents()"
+                class="text-sm text-secondary hover:text-primary transition-colors">
+                Ver todos →
+            </button>
+        </div>
+
+        <!-- Loading State -->
+        <div *ngIf="isLoadingEvents" class="text-center py-12">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto"></div>
+            <p class="text-secondary mt-4">Carregando eventos...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div *ngIf="!isLoadingEvents && recentEvents.length === 0" class="text-center py-12">
             <svg class="w-16 h-16 text-grayCool mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4" />
             </svg>
             <p class="text-secondary">Nenhuma atividade recente</p>
             <p class="text-grayCool text-sm mt-2">Comece criando seu primeiro evento!</p>
+        </div>
+
+        <!-- Events List -->
+        <div *ngIf="!isLoadingEvents && recentEvents.length > 0" class="space-y-3">
+            <div *ngFor="let event of recentEvents" (click)="navigateToEvent(event.id)"
+                class="p-4 border border-grayLight rounded-lg hover:shadow-md hover:border-primary transition-all duration-200 cursor-pointer group">
+                <div class="flex items-start justify-between">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span
+                                class="inline-block px-2 py-1 bg-gradient-to-r from-primary to-secondary text-white text-xs font-medium rounded">
+                                {{ translateEventType(event.type) }}
+                            </span>
+                            <span class="text-xs text-grayCool">
+                                {{ formatDate(event.date) }} às {{ event.time }}
+                            </span>
+                        </div>
+                        <h3
+                            class="text-secondary font-semibold group-hover:text-primary transition-colors line-clamp-1">
+                            {{ event.title }}
+                        </h3>
+                        <p *ngIf="event.description" class="text-sm text-grayCool mt-1 line-clamp-2">
+                            {{ event.description }}
+                        </p>
+                        <div class="flex items-center gap-4 mt-2 text-xs text-grayCool">
+                            <span class="flex items-center gap-1">
+                                <i class="ph-bold ph-map-pin"></i>
+                                {{ event.location }}
+                            </span>
+                            <span *ngIf="event.capacity" class="flex items-center gap-1">
+                                <i class="ph-bold ph-users"></i>
+                                {{ event.capacity }} vagas
+                            </span>
+                            <span *ngIf="!event.capacity" class="flex items-center gap-1">
+                                <i class="ph-bold ph-users"></i>
+                                Ilimitado
+                            </span>
+                        </div>
+                    </div>
+                    <div class="ml-4">
+                        <svg class="w-5 h-5 text-grayCool group-hover:text-primary transition-colors" fill="none"
+                            stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

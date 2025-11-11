@@ -3,7 +3,7 @@
         {{ label }}
     </label>
     <input [type]="type" [id]="id" [name]="name" [placeholder]="placeholder" [value]="control.value || ''"
-        [disabled]="disabled" (input)="onInputChange($event)" (blur)="onBlurEvent()"
+        [disabled]="disabled" [attr.maxlength]="maxlength" (input)="onInputChange($event)" (blur)="onBlurEvent()"
         class="w-full border rounded-xl px-3 py-2 bg-grayLight focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-all disabled:opacity-60 disabled:cursor-not-allowed"
         [class.border-red-500]="control.invalid && control.touched" />
     <span *ngIf="control.invalid && control.touched"

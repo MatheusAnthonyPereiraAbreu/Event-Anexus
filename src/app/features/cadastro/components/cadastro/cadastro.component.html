@@ -51,10 +51,10 @@
 
                 <h2 class="text-xl font-semibold">Segurança</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <app-input label="Senha" placeholder="Mínimo 6 caracteres" type="password" icon="lock"
+                    <app-input label="Senha" placeholder="Mínimo 8 caracteres" type="password" icon="lock"
                         [control]="cadastroForm.get('password')!" [errorMessages]="{
                             required: 'A senha é obrigatória.',
-                            minlength: 'A senha precisa ter ao menos 6 caracteres.'
+                            minlength: 'A senha precisa ter ao menos 8 caracteres.'
                         }" />
 
                     <app-input label="Confirmar senha" placeholder="Digite a senha novamente" type="password"

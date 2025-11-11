@@ -1,0 +1,28 @@
+<div class="relative pb-8">
+    <label *ngIf="label" class="block text-sm font-medium mb-1">
+        {{ label }}
+    </label>
+
+    <div class="relative">
+        <select [formControl]="$any(control)" (blur)="onBlurEvent()"
+            class="w-full border rounded-xl px-3 py-2 bg-grayLight focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-all appearance-none cursor-pointer"
+            [class.border-red-500]="showError">
+            <option value="" disabled>{{ placeholder }}</option>
+            <option *ngFor="let option of options" [value]="option.value">
+                {{ option.label }}
+            </option>
+        </select>
+
+        <!-- Ícone de seta -->
+        <div class="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <i class="ph-bold ph-caret-down text-gray-500"></i>
+        </div>
+    </div>
+
+    <!-- Mensagens de erro -->
+    <span *ngIf="showError" class="absolute left-0 z-10 text-red-500 text-sm top-[calc(100%-1.5rem)]">
+        <span *ngFor="let error of control.errors | keyvalue">
+            {{ getErrorMessage(error.key) || error.value }}
+        </span>
+    </span>
+</div>

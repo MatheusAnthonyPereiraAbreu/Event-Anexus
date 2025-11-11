@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { LoginDto } from '../../../../core/dto/login.dto';
+import { UserType } from '../../../../core/dto/user.dto';
 import { AuthService } from '../../../../core/services/auth.service';
 import { ModalService } from '../../../../shared/services/modal.service';
 import { InputComponent } from '../../../../shared/components/input/input.component';
@@ -62,7 +63,14 @@ export class LoginComponent {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         console.log('Login realizado com sucesso:', response.message);
-        this.router.navigate(['/dashboard']);
+
+        // Redireciona baseado no tipo de usuário
+        const user = this.authService.getCurrentUser();
+        if (user?.type === UserType.ORGANIZER) {
+          this.router.navigate(['/dashboard']);
+        } else {
+          this.router.navigate(['/participant-dashboard']);
+        }
       },
       error: (error) => {
         console.error('Erro ao fazer login:', error);

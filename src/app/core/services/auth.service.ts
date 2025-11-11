@@ -1,9 +1,9 @@
-import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { Injectable } from '@angular/core';
 import { UserDto } from '../dto/user.dto';
 import { LoginDto, LoginResponseDto } from '../dto/login.dto';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { PlatformService } from './platform.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,13 +11,11 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
-  private isBrowser: boolean;
 
   constructor(
     private httpService: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
+    private platformService: PlatformService
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   isAuthenticated(): boolean {
@@ -25,46 +23,28 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) {
-      return null;
-    }
-    return sessionStorage.getItem(this.TOKEN_KEY) ?? null;
+    return this.platformService.getSessionStorage(this.TOKEN_KEY);
   }
 
   setToken(token: string): void {
-    if (!this.isBrowser) {
-      return;
-    }
-    sessionStorage.setItem(this.TOKEN_KEY, token);
+    this.platformService.setSessionStorage(this.TOKEN_KEY, token);
   }
 
   clearToken(): void {
-    if (!this.isBrowser) {
-      return;
-    }
-    sessionStorage.removeItem(this.TOKEN_KEY);
+    this.platformService.removeSessionStorage(this.TOKEN_KEY);
   }
 
   getCurrentUser(): UserDto | null {
-    if (!this.isBrowser) {
-      return null;
-    }
-    const user = sessionStorage.getItem(this.USER_KEY);
+    const user = this.platformService.getSessionStorage(this.USER_KEY);
     return user ? JSON.parse(user) : null;
   }
 
   setCurrentUser(user: UserDto): void {
-    if (!this.isBrowser) {
-      return;
-    }
-    sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
+    this.platformService.setSessionStorage(this.USER_KEY, JSON.stringify(user));
   }
 
   clearCurrentUser(): void {
-    if (!this.isBrowser) {
-      return;
-    }
-    sessionStorage.removeItem(this.USER_KEY);
+    this.platformService.removeSessionStorage(this.USER_KEY);
   }
 
   login(credentials: LoginDto): Observable<LoginResponseDto> {
