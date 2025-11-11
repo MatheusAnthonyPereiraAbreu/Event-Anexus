@@ -11,13 +11,12 @@ import { Observable, tap } from 'rxjs';
 export class AuthService {
   private readonly TOKEN_KEY = 'auth_token';
   private readonly USER_KEY = 'auth_user';
-  private isBrowser: boolean;
+
 
   constructor(
     private httpService: HttpClient,
-    @Inject(PLATFORM_ID) platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
-    this.isBrowser = isPlatformBrowser(platformId);
   }
 
   isAuthenticated(): boolean {
@@ -25,46 +24,42 @@ export class AuthService {
   }
 
   getToken(): string | null {
-    if (!this.isBrowser) {
-      return null;
+    if (isPlatformBrowser(this.platformId)) {
+      return sessionStorage.getItem(this.TOKEN_KEY) ?? null;
     }
-    return sessionStorage.getItem(this.TOKEN_KEY) ?? null;
+    return null;
   }
 
   setToken(token: string): void {
-    if (!this.isBrowser) {
-      return;
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.setItem(this.TOKEN_KEY, token);
     }
-    sessionStorage.setItem(this.TOKEN_KEY, token);
   }
 
   clearToken(): void {
-    if (!this.isBrowser) {
-      return;
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.removeItem(this.TOKEN_KEY);
     }
-    sessionStorage.removeItem(this.TOKEN_KEY);
   }
 
   getCurrentUser(): UserDto | null {
-    if (!this.isBrowser) {
-      return null;
+    if (isPlatformBrowser(this.platformId)) {
+      const user = sessionStorage.getItem(this.USER_KEY);
+      return user ? JSON.parse(user) : null;
     }
-    const user = sessionStorage.getItem(this.USER_KEY);
-    return user ? JSON.parse(user) : null;
+    return null;
   }
 
   setCurrentUser(user: UserDto): void {
-    if (!this.isBrowser) {
-      return;
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
     }
-    sessionStorage.setItem(this.USER_KEY, JSON.stringify(user));
   }
 
   clearCurrentUser(): void {
-    if (!this.isBrowser) {
-      return;
+    if (isPlatformBrowser(this.platformId)) {
+      sessionStorage.removeItem(this.USER_KEY);
     }
-    sessionStorage.removeItem(this.USER_KEY);
   }
 
   login(credentials: LoginDto): Observable<LoginResponseDto> {

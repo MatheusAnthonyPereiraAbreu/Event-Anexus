@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../core/services/auth.service';
@@ -12,6 +12,7 @@ import { UsersService } from '../../../core/services/users.service';
     styleUrl: './sidebar.component.scss'
 })
 export class SidebarComponent implements OnInit {
+    @Input() isSecondaryColor = false; // Para mudar a cor da sidebar
     isSidebarOpen = true;
     userId = '';
     userEmail = '';

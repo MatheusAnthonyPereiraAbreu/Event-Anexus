@@ -1,0 +1,25 @@
+<div class="relative pb-8">
+    <label *ngIf="label" class="block text-sm font-medium mb-1">
+        {{ label }}
+    </label>
+
+    <textarea [formControl]="$any(control)" [placeholder]="placeholder" [rows]="rows" [maxlength]="maxlength || 9999"
+        (blur)="onBlurEvent()"
+        class="w-full border rounded-xl px-3 py-2 bg-grayLight focus:bg-white focus:outline-none focus:ring-2 focus:ring-secondary transition-all resize-none"
+        [class.border-red-500]="showError">
+    </textarea>
+
+    <div class="absolute left-0 top-[calc(100%-1.5rem)] w-full flex justify-between text-xs">
+        <!-- Mensagens de erro -->
+        <span *ngIf="showError" class="text-red-500 z-10">
+            <span *ngFor="let error of control.errors | keyvalue">
+                {{ getErrorMessage(error.key) }}
+            </span>
+        </span>
+
+        <!-- Contador de caracteres -->
+        <span *ngIf="showCounter && maxlength" class="ml-auto text-gray-500">
+            {{ currentLength }}/{{ maxlength }}
+        </span>
+    </div>
+</div>

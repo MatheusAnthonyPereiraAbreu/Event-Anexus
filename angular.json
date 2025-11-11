@@ -61,19 +61,32 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "namedChunks": true
             }
           },
           "defaultConfiguration": "production"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "buildTarget": "frontend:build:development",
+            "port": 4200,
+            "host": "localhost",
+            "open": false,
+            "liveReload": true,
+            "watch": true,
+            "poll": 2000,
+            "hmr": true
+          },
           "configurations": {
             "production": {
               "buildTarget": "frontend:build:production"
             },
             "development": {
-              "buildTarget": "frontend:build:development"
+              "buildTarget": "frontend:build:development",
+              "liveReload": true,
+              "hmr": true
             }
           },
           "defaultConfiguration": "development"

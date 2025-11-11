@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     selector: 'app-dashboard-home',
@@ -9,6 +10,8 @@ import { CommonModule } from '@angular/common';
     styleUrl: './dashboard-home.component.scss'
 })
 export class DashboardHomeComponent {
+    constructor(private router: Router) { }
+
     stats = [
         {
             title: 'Total de Eventos',
@@ -35,4 +38,8 @@ export class DashboardHomeComponent {
             color: 'bg-blue-500'
         }
     ];
+
+    navigateToCreateEvent() {
+        this.router.navigate(['/dashboard/eventos/novo']);
+    }
 }
