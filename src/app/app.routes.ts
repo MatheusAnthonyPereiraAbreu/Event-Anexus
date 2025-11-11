@@ -9,15 +9,19 @@ import { AuthShellComponent } from './features/auth-shell/components/auth-shell/
 import { DashboardShellComponent } from './features/dashboard/components/dashboard-shell/dashboard-shell.component';
 import { DashboardHomeComponent } from './features/dashboard/components/dashboard-home/dashboard-home.component';
 import { ParticipantDashboardComponent } from './features/participant-dashboard/components/participant-dashboard/participant-dashboard.component';
+import { ParticipantHomeComponent } from './features/participant-dashboard/components/participant-home/participant-home.component';
 import { EditUserComponent } from './features/usuarios/components/edit-user/edit-user.component';
 import { CreateEventComponent } from './features/events/components/create-event/create-event.component';
 import { ListEventsComponent } from './features/events/components/list-events/list-events.component';
 import { EditEventComponent } from './features/events/components/edit-event/edit-event.component';
+import { AvailableEventsComponent } from './features/participant-events/components/available-events/available-events.component';
+import { MyEnrollmentsComponent } from './features/participant-events/components/my-enrollments/my-enrollments.component';
+import { EventDetailsComponent } from './features/participant-events/components/event-details/event-details.component';
 
 export const routes: Routes = [
-    // Rotas protegidas - Dashboard Administrador (ORGANIZER)
+    // Dashboard Organizador
     {
-        path: 'dashboard',
+        path: 'dashboard-admin',
         component: DashboardShellComponent,
         canActivate: [AuthGuard, roleGuard],
         data: { role: UserType.ORGANIZER },
@@ -27,17 +31,21 @@ export const routes: Routes = [
             { path: 'eventos', component: ListEventsComponent },
             { path: 'eventos/novo', component: CreateEventComponent },
             { path: 'eventos/editar/:id', component: EditEventComponent },
-            { path: 'participantes', component: DashboardHomeComponent } // Placeholder
+            { path: 'participantes', component: DashboardHomeComponent }
         ]
     },
-    // Rotas protegidas - Dashboard Participante (REGULAR)
+    // Dashboard Participante
     {
-        path: 'participant-dashboard',
+        path: 'dashboard-participant',
+        component: ParticipantDashboardComponent,
         canActivate: [AuthGuard, roleGuard],
         data: { role: UserType.REGULAR },
         children: [
-            { path: '', component: ParticipantDashboardComponent },
-            { path: 'perfil/:id', component: EditUserComponent }
+            { path: '', component: ParticipantHomeComponent },
+            { path: 'perfil/:id', component: EditUserComponent },
+            { path: 'eventos-disponiveis', component: AvailableEventsComponent },
+            { path: 'minhas-inscricoes', component: MyEnrollmentsComponent },
+            { path: 'evento-detalhes/:id', component: EventDetailsComponent }
         ]
     },
     // Rotas de autenticação
@@ -51,8 +59,9 @@ export const routes: Routes = [
             { path: 'esquecer-senha', component: EsquecerSenhaComponent, data: { animation: 'EsquecerPage' } },
         ]
     },
-    // Redirect para dashboard se rota não encontrada
-    { path: '**', redirectTo: '/dashboard' }
+    // Redirect para login se rota não encontrada
+    { path: '**', redirectTo: '/login' }
 ];
+
 
 

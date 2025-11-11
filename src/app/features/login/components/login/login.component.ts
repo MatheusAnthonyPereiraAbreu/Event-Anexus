@@ -62,15 +62,14 @@ export class LoginComponent {
 
     this.authService.login(credentials).subscribe({
       next: (response) => {
-        console.log('Login realizado com sucesso:', response.message);
+        const user = this.authService.getCurrentUser();
 
         // Redireciona baseado no tipo de usuário
-        const user = this.authService.getCurrentUser();
-        if (user?.type === UserType.ORGANIZER) {
-          this.router.navigate(['/dashboard']);
-        } else {
-          this.router.navigate(['/participant-dashboard']);
-        }
+        const targetRoute = user?.type === UserType.ORGANIZER
+          ? '/dashboard-admin'
+          : '/dashboard-participant';
+
+        this.router.navigate([targetRoute]);
       },
       error: (error) => {
         console.error('Erro ao fazer login:', error);

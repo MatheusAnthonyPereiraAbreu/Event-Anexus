@@ -16,15 +16,16 @@ export const roleGuard: CanActivateFn = (route, state) => {
 
     const requiredRole = route.data['role'] as UserType;
 
-    if (requiredRole && currentUser.type !== requiredRole) {
-        // Redireciona para a dashboard apropriada
-        if (currentUser.type === UserType.ORGANIZER) {
-            router.navigate(['/dashboard']);
-        } else {
-            router.navigate(['/participant-dashboard']);
-        }
-        return false;
+    // Se não há role requerida, permite acesso
+    if (!requiredRole) {
+        return true;
     }
 
-    return true;
+    // Se a role corresponde, permite acesso
+    if (currentUser.type === requiredRole) {
+        return true;
+    }
+
+    // Se chegou aqui, a role não corresponde
+    return false;
 };
