@@ -98,14 +98,14 @@ export class DashboardHomeComponent extends BrowserOnlyComponent implements OnIn
     }
 
     navigateToCreateEvent() {
-        this.router.navigate(['/dashboard/eventos/novo']);
+        this.router.navigate(['/dashboard-admin/eventos/novo']);
     }
 
     navigateToEvent(eventId: number) {
-        this.router.navigate(['/dashboard/eventos/editar', eventId]);
+        this.router.navigate(['/dashboard-admin/eventos/editar', eventId]);
     }
 
     navigateToAllEvents() {
-        this.router.navigate(['/dashboard/eventos']);
+        this.router.navigate(['/dashboard-admin/eventos']);
     }
 }

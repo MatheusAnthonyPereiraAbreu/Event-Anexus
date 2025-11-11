@@ -186,7 +186,7 @@ export class CreateEventComponent {
                     'Evento criado!',
                     response.message || 'O evento foi cadastrado com sucesso e está visível para inscrições.'
                 ).subscribe(() => {
-                    this.router.navigate(['/dashboard']);
+                    this.router.navigate(['/dashboard-admin/eventos']);
                 });
             },
             error: (error) => {
@@ -212,7 +212,7 @@ export class CreateEventComponent {
     }
 
     cancel() {
-        this.router.navigate(['/dashboard']);
+        this.router.navigate(['/dashboard-admin/eventos']);
     }
 
     // Máscara para data (DD/MM/YYYY)

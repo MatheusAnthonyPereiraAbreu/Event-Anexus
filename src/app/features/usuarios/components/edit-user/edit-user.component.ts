@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, ValidationErrors } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { UsersService } from '../../../../core/services/users.service';
+import { AuthService } from '../../../../core/services/auth.service';
 import { ModalService } from '../../../../shared/services/modal.service';
-import { UserDto } from '../../../../core/dto/user.dto';
+import { UserDto, UserType } from '../../../../core/dto/user.dto';
 import { UpdateUserDto, UpdatePasswordDto } from '../../../../core/dto/update-user.dto';
 import { InputComponent } from '../../../../shared/components/input/input.component';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
@@ -36,6 +37,7 @@ export class EditUserComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private usersService: UsersService,
+        private authService: AuthService,
         private modalService: ModalService
     ) {
         // Form de dados do usuário
@@ -61,8 +63,25 @@ export class EditUserComponent implements OnInit {
             this.loadUser();
         } else {
             this.modalService.error('Erro', 'ID do usuário não fornecido').subscribe();
-            this.router.navigate(['/dashboard']);
+            this.navigateToDashboard();
         }
+    }
+
+    /**
+     * Obtém a rota base do dashboard baseado no tipo de usuário atual
+     */
+    private getDashboardBasePath(): string {
+        const currentUser = this.authService.getCurrentUser();
+        return currentUser?.type === UserType.ORGANIZER
+            ? '/dashboard-admin'
+            : '/dashboard-participant';
+    }
+
+    /**
+     * Navega para o dashboard apropriado
+     */
+    private navigateToDashboard(): void {
+        this.router.navigate([this.getDashboardBasePath()]);
     }
 
     /**
@@ -107,7 +126,7 @@ export class EditUserComponent implements OnInit {
                     'Erro ao carregar usuário',
                     error.error?.message || 'Não foi possível carregar os dados do usuário'
                 ).subscribe(() => {
-                    this.router.navigate(['/dashboard']);
+                    this.navigateToDashboard();
                 });
                 this.isLoadingUser = false;
             }

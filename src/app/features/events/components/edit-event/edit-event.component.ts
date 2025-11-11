@@ -80,7 +80,7 @@ export class EditEventComponent extends BrowserOnlyComponent implements OnInit {
         } else {
             this.isLoading = false;
             this.modalService.error('Erro', 'ID do evento não encontrado').subscribe();
-            this.router.navigate(['/dashboard/eventos']);
+            this.router.navigate(['/dashboard-admin/eventos']);
         }
     }
 
@@ -99,7 +99,7 @@ export class EditEventComponent extends BrowserOnlyComponent implements OnInit {
                         'Erro ao carregar evento',
                         'Não foi possível carregar os dados do evento. Tente novamente.'
                     ).subscribe(() => {
-                        this.router.navigate(['/dashboard/eventos']);
+                        this.router.navigate(['/dashboard-admin/eventos']);
                     });
                 }
             });
@@ -248,7 +248,7 @@ export class EditEventComponent extends BrowserOnlyComponent implements OnInit {
                     'Evento atualizado!',
                     response.message || 'O evento foi atualizado com sucesso.'
                 ).subscribe(() => {
-                    this.router.navigate(['/dashboard/eventos']);
+                    this.router.navigate(['/dashboard-admin/eventos']);
                 });
             },
             error: (error) => {
@@ -270,7 +270,7 @@ export class EditEventComponent extends BrowserOnlyComponent implements OnInit {
     }
 
     cancel(): void {
-        this.router.navigate(['/dashboard/eventos']);
+        this.router.navigate(['/dashboard-admin/eventos']);
     }
 
     applyDateMask(event: Event): void {

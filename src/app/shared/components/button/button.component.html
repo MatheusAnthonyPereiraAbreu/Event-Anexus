@@ -1,4 +1,4 @@
-<button [type]="type" [disabled]="isDisabled" [class]="getButtonClasses()" (click)="onClick($event)">
+<button [type]="type" [disabled]="isDisabled" [class]="getButtonClasses()" (click)="handleClick($event)">
     <!-- Loading spinner -->
     <svg *ngIf="loading" class="w-5 h-5 animate-spin" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
         aria-hidden="true">
@@ -7,11 +7,11 @@
     </svg>
 
     <!-- Icon left -->
-    <i *ngIf="!loading && icon && iconPosition === 'left'" [class]="'ph-bold ph-' + icon"></i>
+    <i *ngIf="!loading && displayIcon && displayIconPosition === 'left'" [class]="'ph-bold ph-' + displayIcon"></i>
 
     <!-- Button text -->
     <span>{{ displayText }}</span>
 
     <!-- Icon right -->
-    <i *ngIf="!loading && icon && iconPosition === 'right'" [class]="'ph-bold ph-' + icon"></i>
+    <i *ngIf="!loading && displayIcon && displayIconPosition === 'right'" [class]="'ph-bold ph-' + displayIcon"></i>
 </button>

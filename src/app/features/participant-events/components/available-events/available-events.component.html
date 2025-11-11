@@ -1,0 +1,98 @@
+<div class="p-4 md:p-8 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-6">
+        <h1 class="text-3xl font-semibold text-gray-800 mb-2">Eventos Disponíveis</h1>
+        <p class="text-gray-600">Confira os eventos disponíveis para inscrição</p>
+    </div>
+
+    <!-- Search and Filters Bar -->
+    <div class="mb-6 flex flex-col md:flex-row gap-4">
+        <!-- Search Input -->
+        <div class="flex-1 relative">
+            <i class="ph-bold ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
+            <input type="text" placeholder="Buscar eventos por título, descrição..."
+                class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-secondary focus:border-transparent outline-none transition-all">
+        </div>
+
+        <!-- Filter Button -->
+        <button
+            class="flex items-center justify-center gap-2 px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-secondary hover:text-white hover:border-secondary transition-colors font-medium text-gray-700 whitespace-nowrap">
+            <i class="ph-bold ph-funnel text-xl"></i>
+            <span>Filtros</span>
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-16 text-gray-500">
+        <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+        <p>Carregando eventos...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && events.length === 0" class="flex flex-col items-center justify-center py-16 text-center">
+        <i class="ph ph-calendar-x text-6xl text-gray-300 mb-4"></i>
+        <h2 class="text-2xl font-semibold text-gray-600 mb-2">Nenhum evento disponível</h2>
+        <p class="text-gray-400">Não há eventos disponíveis para inscrição no momento.</p>
+    </div>
+
+    <!-- Events Grid -->
+    <div *ngIf="!isLoading && events.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let event of events"
+            class="bg-white rounded-xl shadow-sm overflow-hidden flex flex-col transition-all hover:shadow-md hover:-translate-y-1">
+
+            <!-- Card Header -->
+            <div
+                class="p-5 bg-gradient-to-r from-purple-500 to-purple-700 text-white flex justify-between items-center">
+                <div class="bg-white/20 px-3 py-1.5 rounded-full text-sm font-medium">
+                    {{ getEventTypeLabel(event.type) }}
+                </div>
+                <div class="flex items-center gap-1.5 text-sm">
+                    <i class="ph ph-calendar text-lg"></i>
+                    {{ formatDate(event.date) }}
+                </div>
+            </div>
+
+            <!-- Card Body -->
+            <div class="p-5 flex-1 flex flex-col">
+                <h3 class="text-xl font-semibold text-gray-800 mb-3 leading-tight">
+                    {{ event.title }}
+                </h3>
+                <p class="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+                    {{ event.description || 'Sem descrição' }}
+                </p>
+
+                <!-- Event Details -->
+                <div class="flex flex-col gap-2.5 mb-4">
+                    <div class="flex items-center gap-2.5 text-gray-700 text-sm">
+                        <i class="ph ph-clock text-lg text-gray-400"></i>
+                        <span>{{ event.time }}</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-gray-700 text-sm">
+                        <i class="ph ph-map-pin text-lg text-gray-400"></i>
+                        <span>{{ event.location }}</span>
+                    </div>
+                    <div *ngIf="event.speaker" class="flex items-center gap-2.5 text-gray-700 text-sm">
+                        <i class="ph ph-user-circle text-lg text-gray-400"></i>
+                        <span>{{ event.speaker }}</span>
+                    </div>
+                    <div class="flex items-center gap-2.5 text-gray-700 text-sm">
+                        <i class="ph ph-building text-lg text-gray-400"></i>
+                        <span>{{ event.institution_organizer }}</span>
+                    </div>
+                </div>
+
+                <!-- Capacity Info -->
+                <div class="flex items-center gap-2 p-3 bg-gray-100 rounded-lg text-gray-700 text-sm font-medium mb-4">
+                    <i class="ph ph-users-three text-lg text-gray-600"></i>
+                    <span>{{ getCapacityText(event) }}</span>
+                </div>
+
+                <!-- Button -->
+                <div class="mt-auto">
+                    <app-button label="Ver Detalhes" variant="primary" (onClick)="viewEventDetails(event.id)">
+                    </app-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

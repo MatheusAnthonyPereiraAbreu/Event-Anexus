@@ -23,7 +23,7 @@
     <!-- Navigation -->
     <nav class="p-4 space-y-2 flex-1">
         <a *ngFor="let item of menuItems" [routerLink]="item.route" routerLinkActive="bg-secondary/70 shadow-lg"
-            [routerLinkActiveOptions]="{exact: item.route === '/dashboard'}"
+            [routerLinkActiveOptions]="{exact: item.route === '/dashboard-admin' || item.route === '/dashboard-participant'}"
             class="flex items-center space-x-3 p-3 rounded-lg hover:bg-secondary/50 transition-all duration-200 group"
             [ngClass]="{'justify-center': !isSidebarOpen, 'justify-start': isSidebarOpen }">
             <i [class]="'ph-bold ' + item.icon + ' text-2xl group-hover:scale-110 transition-transform'"></i>

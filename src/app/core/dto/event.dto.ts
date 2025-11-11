@@ -66,3 +66,59 @@ export interface EventResponseDto {
     message: string;
     url: string;
 }
+
+// DTO para eventos disponíveis (GET /events/available)
+export interface AvailableEventDto {
+    id: number;
+    title: string;
+    description: string;
+    date: string; // ISO format
+    time: string; // HH:MM format
+    location: string;
+    capacity: number | null;
+    type: string;
+    speaker: string;
+    institution_organizer: string;
+    created_by: number;
+    remaining_slots: number; // Vagas restantes
+}
+
+// DTO para minhas inscrições (GET /events/my-enrollments)
+export interface MyEnrollmentDto {
+    id: number;
+    title: string;
+    description: string;
+    date: string; // ISO format
+    time: string; // HH:MM format
+    location: string;
+    capacity: number | null;
+    type: string;
+    speaker: string;
+    institution_organizer: string;
+    created_by: number;
+    remaining_slots: number;
+}
+
+// DTO para detalhes públicos do evento (GET /events/{id}/public)
+export interface PublicEventDetailDto {
+    id: number;
+    title: string;
+    description: string;
+    date: string; // ISO format
+    time: string; // HH:MM format
+    location: string;
+    capacity: number | null;
+    type: string;
+    speaker: string;
+    institution_organizer: string;
+    created_by: number;
+    remaining_slots: number;
+    enrolled_count: number; // Quantidade de inscritos
+    is_full: boolean; // Se está lotado
+    is_past: boolean; // Se já passou
+}
+
+// DTO de resposta para inscrição
+export interface EnrollmentResponseDto {
+    message: string;
+}

@@ -52,11 +52,11 @@ export class ListEventsComponent extends BrowserOnlyComponent implements OnInit 
     }
 
     createNewEvent(): void {
-        this.router.navigate(['/dashboard/eventos/novo']);
+        this.router.navigate(['/dashboard-admin/eventos/novo']);
     }
 
     editEvent(eventId: number): void {
-        this.router.navigate(['/dashboard/eventos/editar', eventId]);
+        this.router.navigate(['/dashboard-admin/eventos/editar', eventId]);
     }
 
     deleteEvent(event: EventDto): void {

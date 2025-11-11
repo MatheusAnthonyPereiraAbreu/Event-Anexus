@@ -12,21 +12,52 @@ export type ButtonType = 'primary' | 'secondary' | 'outline' | 'danger';
 })
 export class ButtonComponent {
     @Input() text: string = '';
+    @Input() label: string = ''; // Alias para text
     @Input() type: 'button' | 'submit' | 'reset' = 'button';
     @Input() buttonType: ButtonType = 'primary';
+    @Input() variant: ButtonType = 'primary'; // Alias para buttonType
     @Input() disabled: boolean = false;
     @Input() loading: boolean = false;
     @Input() loadingText: string = 'Carregando...';
     @Input() icon: string = '';
+    @Input() iconLeft: string = ''; // Alias para icon com position left
+    @Input() iconRight: string = ''; // Alias para icon com position right
     @Input() iconPosition: 'left' | 'right' = 'left';
     @Input() fullWidth: boolean = true;
 
     @Output() btnClick = new EventEmitter<Event>();
+    @Output() onClick = new EventEmitter<Event>(); // Alias para btnClick
 
-    onClick(event: Event): void {
+    handleClick(event: Event): void {
         if (!this.disabled && !this.loading) {
             this.btnClick.emit(event);
+            this.onClick.emit(event);
         }
+    }
+
+    get displayText(): string {
+        if (this.loading) {
+            return this.loadingText;
+        }
+        return this.label || this.text;
+    }
+
+    get displayIcon(): string {
+        return this.iconLeft || this.iconRight || this.icon;
+    }
+
+    get displayIconPosition(): 'left' | 'right' {
+        if (this.iconLeft) return 'left';
+        if (this.iconRight) return 'right';
+        return this.iconPosition;
+    }
+
+    get effectiveButtonType(): ButtonType {
+        return this.variant || this.buttonType;
+    }
+
+    get isDisabled(): boolean {
+        return this.disabled || this.loading;
     }
 
     getButtonClasses(): string {
@@ -36,7 +67,7 @@ export class ButtonComponent {
 
         let typeClasses = '';
 
-        switch (this.buttonType) {
+        switch (this.effectiveButtonType) {
             case 'primary':
                 typeClasses = 'bg-secondary text-white hover:bg-secondary/90';
                 break;
@@ -53,12 +84,5 @@ export class ButtonComponent {
 
         return `${baseClasses} ${widthClass} ${typeClasses}`.trim();
     }
-
-    get isDisabled(): boolean {
-        return this.disabled || this.loading;
-    }
-
-    get displayText(): string {
-        return this.loading ? this.loadingText : this.text;
-    }
 }
+
