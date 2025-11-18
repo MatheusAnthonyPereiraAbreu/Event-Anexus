@@ -81,6 +81,7 @@ export interface AvailableEventDto {
     institution_organizer: string;
     created_by: number;
     remaining_slots: number; // Vagas restantes
+    is_participant: boolean; // Se o usuário atual está inscrito
 }
 
 // DTO para minhas inscrições (GET /events/my-enrollments)
@@ -97,6 +98,7 @@ export interface MyEnrollmentDto {
     institution_organizer: string;
     created_by: number;
     remaining_slots: number;
+    certificate_id: number | null; // ID do certificado se existir
 }
 
 // DTO para detalhes públicos do evento (GET /events/{id}/public)
@@ -116,6 +118,7 @@ export interface PublicEventDetailDto {
     enrolled_count: number; // Quantidade de inscritos
     is_full: boolean; // Se está lotado
     is_past: boolean; // Se já passou
+    is_participant: boolean; // Se o usuário atual está inscrito
 }
 
 // DTO de resposta para inscrição

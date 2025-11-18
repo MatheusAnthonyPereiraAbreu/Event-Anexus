@@ -47,7 +47,8 @@ export class ParticipantHomeComponent extends BrowserOnlyComponent implements On
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (events) => {
-                    this.availableEvents = events.slice(0, 6);
+                    const eventsAvaliable = events.filter(event => !event.is_participant);
+                    this.availableEvents = eventsAvaliable.slice(0, 6);
                     this.isLoadingAvailable = false;
                 },
                 error: (error) => {

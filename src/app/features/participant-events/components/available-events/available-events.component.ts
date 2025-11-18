@@ -37,7 +37,8 @@ export class AvailableEventsComponent extends BrowserOnlyComponent implements On
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (events) => {
-                    this.events = events;
+                    const eventsAvailable = events.filter(event => !event.is_participant);
+                    this.events = eventsAvailable;
                     this.isLoading = false;
                 },
                 error: (error) => {

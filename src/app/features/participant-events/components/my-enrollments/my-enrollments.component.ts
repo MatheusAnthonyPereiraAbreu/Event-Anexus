@@ -123,4 +123,12 @@ export class MyEnrollmentsComponent extends BrowserOnlyComponent implements OnIn
     viewEventDetails(eventId: number): void {
         this.router.navigate(['/dashboard-participant/evento-detalhes', eventId]);
     }
+
+    viewCertificate(certificateId: number): void {
+        this.router.navigate(['/dashboard-participant/certificado', certificateId]);
+    }
+
+    hasCertificate(event: MyEnrollmentDto): boolean {
+        return event.certificate_id !== null;
+    }
 }

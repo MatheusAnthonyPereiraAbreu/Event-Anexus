@@ -13,6 +13,7 @@ export class TextareaComponent {
     @Input() label: string = '';
     @Input() placeholder: string = '';
     @Input() control!: AbstractControl;
+    @Input() name: string = '';
     @Input() errorMessages: { [key: string]: string } = {};
     @Input() rows: number = 4;
     @Input() maxlength?: number;

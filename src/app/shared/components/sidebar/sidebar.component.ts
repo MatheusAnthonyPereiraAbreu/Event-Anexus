@@ -55,6 +55,11 @@ export class SidebarComponent implements OnInit {
             icon: 'ph-check-circle',
             label: 'Minhas Inscrições',
             route: '/dashboard-participant/minhas-inscricoes'
+        },
+        {
+            icon: 'ph-certificate',
+            label: 'Meus Certificados',
+            route: '/dashboard-participant/meus-certificados'
         }
     ];
 
