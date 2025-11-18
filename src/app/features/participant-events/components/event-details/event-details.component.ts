@@ -19,6 +19,7 @@ export class EventDetailsComponent extends BrowserOnlyComponent implements OnIni
     event: PublicEventDetailDto | null = null;
     isLoading = true;
     isEnrolling = false;
+    isGeneratingCertificate = false;
     eventId!: number;
 
     constructor(
@@ -107,7 +108,7 @@ export class EventDetailsComponent extends BrowserOnlyComponent implements OnIni
 
     canEnroll(): boolean {
         if (!this.event) return false;
-        return !this.event.is_past && !this.event.is_full;
+        return !this.event.is_past && !this.event.is_full && !this.event.is_participant;
     }
 
     enrollInEvent(): void {
@@ -150,5 +151,48 @@ export class EventDetailsComponent extends BrowserOnlyComponent implements OnIni
 
     goBack(): void {
         this.router.navigate(['/dashboard-participant/eventos-disponiveis']);
+    }
+
+    canGenerateCertificate(): boolean {
+        if (!this.event) return false;
+        return this.event.is_participant;
+    }
+
+    generateCertificate(): void {
+        if (!this.canGenerateCertificate()) return;
+
+        this.modalService.confirm(
+            'Emitir Certificado',
+            `Deseja emitir o certificado de participação do evento "${this.event?.title}"?`
+        ).subscribe((confirmed) => {
+            if (confirmed) {
+                this.performCertificateGeneration();
+            }
+        });
+    }
+
+    performCertificateGeneration(): void {
+        this.isGeneratingCertificate = true;
+        this.eventsService.generateCertificate(this.eventId)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (response) => {
+                    this.isGeneratingCertificate = false;
+                    this.modalService.success(
+                        'Certificado Emitido!',
+                        response.message || 'Seu certificado foi gerado com sucesso. Você pode visualizá-lo em "Minhas Inscrições".'
+                    ).subscribe(() => {
+                        this.router.navigate(['/dashboard-participant/minhas-inscricoes']);
+                    });
+                },
+                error: (error) => {
+                    this.isGeneratingCertificate = false;
+                    const errorMessage = error.error?.message || 'Não foi possível gerar o certificado. Tente novamente.';
+                    this.modalService.error(
+                        'Erro ao gerar certificado',
+                        errorMessage
+                    ).subscribe();
+                }
+            });
     }
 }

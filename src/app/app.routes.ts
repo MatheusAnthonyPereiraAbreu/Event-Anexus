@@ -17,6 +17,8 @@ import { EditEventComponent } from './features/events/components/edit-event/edit
 import { AvailableEventsComponent } from './features/participant-events/components/available-events/available-events.component';
 import { MyEnrollmentsComponent } from './features/participant-events/components/my-enrollments/my-enrollments.component';
 import { EventDetailsComponent } from './features/participant-events/components/event-details/event-details.component';
+import { CertificateDetailsComponent } from './features/participant-certificates/components/certificate-details/certificate-details.component';
+import { MyCertificatesComponent } from './features/participant-certificates/components/my-certificates/my-certificates.component';
 
 export const routes: Routes = [
     // Dashboard Organizador
@@ -45,7 +47,9 @@ export const routes: Routes = [
             { path: 'perfil/:id', component: EditUserComponent },
             { path: 'eventos-disponiveis', component: AvailableEventsComponent },
             { path: 'minhas-inscricoes', component: MyEnrollmentsComponent },
-            { path: 'evento-detalhes/:id', component: EventDetailsComponent }
+            { path: 'evento-detalhes/:id', component: EventDetailsComponent },
+            { path: 'meus-certificados', component: MyCertificatesComponent },
+            { path: 'certificado/:id', component: CertificateDetailsComponent }
         ]
     },
     // Rotas de autenticação

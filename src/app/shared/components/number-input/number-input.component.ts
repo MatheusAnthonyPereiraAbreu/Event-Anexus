@@ -13,6 +13,7 @@ export class NumberInputComponent {
     @Input() label: string = '';
     @Input() placeholder: string = '';
     @Input() control!: AbstractControl;
+    @Input() name: string = '';
     @Input() errorMessages: { [key: string]: string } = {};
     @Input() min?: number;
     @Input() max?: number;
