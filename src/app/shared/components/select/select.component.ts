@@ -18,6 +18,7 @@ export class SelectComponent {
     @Input() label: string = '';
     @Input() placeholder: string = 'Selecione uma opção';
     @Input() control!: AbstractControl;
+    @Input() name: string = '';
     @Input() options: SelectOption[] = [];
     @Input() errorMessages: { [key: string]: string } = {};
     @Input() icon?: string;

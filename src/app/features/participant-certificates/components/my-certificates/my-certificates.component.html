@@ -1,0 +1,121 @@
+<div class="p-4 md:p-8 max-w-7xl mx-auto">
+    <!-- Header -->
+    <div class="mb-8">
+        <h1 class="text-3xl font-bold text-gray-800 mb-2">Meus Certificados</h1>
+        <p class="text-gray-600">Visualize e baixe todos os seus certificados de eventos concluídos</p>
+    </div>
+
+    <!-- Search and Filter -->
+    <div class="mb-6 flex flex-col md:flex-row gap-4">
+        <div class="relative flex-1">
+            <i class="ph ph-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 text-xl"></i>
+            <input type="text" placeholder="Buscar por evento..."
+                class="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent">
+        </div>
+        <button
+            class="px-6 py-3 bg-white border border-gray-300 rounded-lg hover:bg-secondary hover:text-white transition-colors flex items-center justify-center gap-2">
+            <i class="ph ph-funnel text-xl"></i>
+            <span>Filtros</span>
+        </button>
+    </div>
+
+    <!-- Loading State -->
+    <div *ngIf="isLoading" class="flex flex-col items-center justify-center py-16 text-gray-500">
+        <div class="w-10 h-10 border-4 border-gray-200 border-t-blue-500 rounded-full animate-spin mb-4"></div>
+        <p>Carregando certificados...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="!isLoading && certificates.length === 0"
+        class="flex flex-col items-center justify-center py-16 text-gray-500">
+        <i class="ph ph-certificate text-6xl mb-4"></i>
+        <p class="text-xl font-semibold mb-2">Nenhum certificado disponível</p>
+        <p class="text-sm">Complete eventos para receber seus certificados</p>
+    </div>
+
+    <!-- Certificates Grid -->
+    <div *ngIf="!isLoading && certificates.length > 0" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div *ngFor="let certificate of certificates"
+            class="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow overflow-hidden border border-gray-100">
+            <!-- Certificate Header -->
+            <div class="p-6 pb-4 bg-gradient-to-br from-primary to-secondary text-white">
+                <div class="flex items-start justify-between mb-3">
+                    <i class="ph ph-certificate text-4xl"></i>
+                    <span *ngIf="certificate.sent_by_email"
+                        class="px-3 py-1 bg-white/20 rounded-full text-xs font-medium flex items-center gap-1">
+                        <i class="ph ph-check-circle"></i>
+                        Enviado por email
+                    </span>
+                </div>
+                <h3 class="text-lg font-bold leading-tight line-clamp-2">{{ certificate.event.title }}</h3>
+            </div>
+
+            <!-- Certificate Body -->
+            <div class="p-6 space-y-3">
+                <!-- Event Date -->
+                <div class="flex items-center gap-3 text-sm">
+                    <i class="ph ph-calendar text-lg text-gray-400"></i>
+                    <span class="text-gray-700">{{ formatDate(certificate.event.date) }}</span>
+                </div>
+
+                <!-- Location -->
+                <div class="flex items-center gap-3 text-sm">
+                    <i class="ph ph-map-pin text-lg text-gray-400"></i>
+                    <span class="text-gray-700 line-clamp-1">{{ certificate.event.location }}</span>
+                </div>
+
+                <!-- Speaker -->
+                <div *ngIf="certificate.event.speaker" class="flex items-center gap-3 text-sm">
+                    <i class="ph ph-user-circle text-lg text-gray-400"></i>
+                    <span class="text-gray-700 line-clamp-1">{{ certificate.event.speaker }}</span>
+                </div>
+
+                <!-- Institution -->
+                <div class="flex items-center gap-3 text-sm">
+                    <i class="ph ph-building text-lg text-gray-400"></i>
+                    <span class="text-gray-700 line-clamp-1">{{ certificate.event.institution_organizer }}</span>
+                </div>
+
+                <!-- Generated At -->
+                <div class="pt-3 border-t border-gray-100">
+                    <div class="flex items-center gap-2 text-xs text-gray-500">
+                        <i class="ph ph-clock"></i>
+                        <span>Emitido em {{ formatDateTime(certificate.generated_at) }}</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Certificate Actions -->
+            <div class="p-4 bg-gray-50 flex gap-2">
+                <button (click)="viewCertificate(certificate.id)"
+                    class="flex-1 px-4 py-2.5 bg-primary text-white rounded-lg hover:bg-primary/90 transition-colors font-medium text-sm flex items-center justify-center gap-2">
+                    <i class="ph ph-eye text-lg"></i>
+                    <span>Visualizar</span>
+                </button>
+                <button (click)="downloadCertificate(certificate)"
+                    class="flex-1 px-4 py-2.5 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors font-medium text-sm flex items-center justify-center gap-2">
+                    <i class="ph ph-download-simple text-lg"></i>
+                    <span>Baixar</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Footer -->
+    <div *ngIf="!isLoading && certificates.length > 0"
+        class="mt-8 p-6 bg-gradient-to-r from-primary/10 to-secondary/10 rounded-xl">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <i class="ph ph-trophy text-3xl text-primary"></i>
+                <div>
+                    <p class="text-sm text-gray-600">Total de Certificados</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ certificates.length }}</p>
+                </div>
+            </div>
+            <div class="text-sm text-gray-600 text-right">
+                <p>Continue participando de eventos</p>
+                <p>para ganhar mais certificados!</p>
+            </div>
+        </div>
+    </div>
+</div>

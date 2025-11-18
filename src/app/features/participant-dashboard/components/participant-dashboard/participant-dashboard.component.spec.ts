@@ -1,26 +1,24 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { RouterOutlet, provideRouter } from '@angular/router';
 import { provideHttpClient } from '@angular/common/http';
 import { provideHttpClientTesting } from '@angular/common/http/testing';
+import { ParticipantDashboardComponent } from './participant-dashboard.component';
 
-import { SidebarComponent } from './sidebar.component';
-
-describe('SidebarComponent', () => {
-    let component: SidebarComponent;
-    let fixture: ComponentFixture<SidebarComponent>;
+describe('ParticipantDashboardComponent', () => {
+    let component: ParticipantDashboardComponent;
+    let fixture: ComponentFixture<ParticipantDashboardComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            imports: [SidebarComponent],
+            imports: [ParticipantDashboardComponent, RouterOutlet],
             providers: [
                 provideHttpClient(),
                 provideHttpClientTesting(),
                 provideRouter([])
             ]
-        })
-            .compileComponents();
+        }).compileComponents();
 
-        fixture = TestBed.createComponent(SidebarComponent);
+        fixture = TestBed.createComponent(ParticipantDashboardComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

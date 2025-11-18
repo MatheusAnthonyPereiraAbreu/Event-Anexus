@@ -38,10 +38,17 @@
                 <i class="ph ph-users-three text-2xl"></i>
                 <span>Evento com lotação esgotada</span>
             </div>
-            <div *ngIf="!event.is_full && !event.is_past"
+            <div *ngIf="!event.is_full && !event.is_past && !event.is_participant"
                 class="flex items-center gap-3 p-4 bg-green-50 border-l-4 border-green-500 rounded-lg text-green-800 font-medium">
                 <i class="ph ph-check-circle text-2xl"></i>
                 <span>Vagas disponíveis - Inscreva-se agora!</span>
+            </div>
+            
+            <div *ngIf="event.is_participant" 
+                class="flex items-center gap-3 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-lg text-blue-800 font-medium"
+            >
+                <i class="ph ph-check-circle text-2xl"></i>
+                <span>Você está inscrito neste evento</span>
             </div>
         </div>
 
@@ -126,12 +133,20 @@
         </div>
 
         <!-- Actions -->
-        <div *ngIf="!event.is_past" class="flex justify-center gap-4 p-8 rounded-xl shadow-sm">
-            <app-button *ngIf="canEnroll()" label="Inscrever-se no Evento" variant="primary" [disabled]="isEnrolling"
-                [iconLeft]="'check'" (onClick)="enrollInEvent()" class="min-w-[250px]">
+        <div class="flex justify-center gap-4 p-8 rounded-xl shadow-sm">
+            <!-- Botão de Inscrição (evento futuro) -->
+            <app-button *ngIf="!event.is_past && canEnroll() " label="Inscrever-se no Evento" variant="primary"
+                [disabled]="isEnrolling" [iconLeft]="'check'" (onClick)="enrollInEvent()" class="min-w-[250px]">
             </app-button>
-            <app-button *ngIf="event.is_full" label="Evento Lotado" variant="secondary" [disabled]="true"
-                class="min-w-[250px]">
+
+            <!-- Evento Lotado (evento futuro) -->
+            <app-button *ngIf="!event.is_past && event.is_full && !event.is_participant" label="Evento Lotado"
+                variant="secondary" [disabled]="true" class="min-w-[250px]">
+            </app-button>
+
+            <!-- Botão de Emitir Certificado (evento passado e inscrito) -->
+            <app-button *ngIf="true" label="Emitir Certificado" variant="primary" [disabled]="isGeneratingCertificate"
+                [iconLeft]="'certificate'" (onClick)="generateCertificate()" class="min-w-[250px]">
             </app-button>
         </div>
     </div>
