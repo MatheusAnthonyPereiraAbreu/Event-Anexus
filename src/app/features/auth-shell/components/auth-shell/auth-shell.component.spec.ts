@@ -1,4 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 
 import { AuthShellComponent } from './auth-shell.component';
 
@@ -8,9 +10,13 @@ describe('AuthShellComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AuthShellComponent]
+      imports: [AuthShellComponent],
+      providers: [
+        provideRouter([]),
+        provideAnimationsAsync()
+      ]
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(AuthShellComponent);
     component = fixture.componentInstance;
