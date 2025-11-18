@@ -129,6 +129,6 @@ export class MyEnrollmentsComponent extends BrowserOnlyComponent implements OnIn
     }
 
     hasCertificate(event: MyEnrollmentDto): boolean {
-        return event.certificate_id !== null;
+        return event.certificate_id !== null && event.certificate_id !== undefined && this.isPastEvent(event);
     }
 }

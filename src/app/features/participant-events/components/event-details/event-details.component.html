@@ -145,7 +145,7 @@
             </app-button>
 
             <!-- Botão de Emitir Certificado (evento passado e inscrito) -->
-            <app-button *ngIf="true" label="Emitir Certificado" variant="primary" [disabled]="isGeneratingCertificate"
+            <app-button *ngIf="event.is_past && event.is_participant" label="Emitir Certificado" variant="primary" [disabled]="isGeneratingCertificate"
                 [iconLeft]="'certificate'" (onClick)="generateCertificate()" class="min-w-[250px]">
             </app-button>
         </div>
