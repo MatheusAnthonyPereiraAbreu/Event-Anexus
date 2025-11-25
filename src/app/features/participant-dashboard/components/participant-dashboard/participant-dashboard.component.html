@@ -2,6 +2,11 @@
     <!-- Sidebar com cor secundária -->
     <app-sidebar [isSecondaryColor]="true" />
 
+    <!-- Notificações -->
+    <div class="notification-bell-container">
+        <app-notification-bell></app-notification-bell>
+    </div>
+
     <!-- Conteúdo Principal -->
     <main class="flex-1 overflow-y-auto">
         <router-outlet></router-outlet>
